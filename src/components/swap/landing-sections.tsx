@@ -23,7 +23,11 @@ type CategoryAction = {
   onChooseCategory: (name: string) => void;
 };
 
-export function HeroSection({ onChooseCategory }: CategoryAction) {
+export function HeroSection({
+  onChooseCategory,
+  onDiscover,
+  onCreate,
+}: CategoryAction & { onDiscover: () => void; onCreate: () => void }) {
   const floatingCategories = [
     {
       cls: "float-stream",
@@ -118,10 +122,11 @@ export function HeroSection({ onChooseCategory }: CategoryAction) {
                 Explorar trocas <ArrowUpRight />
               </a>
             </Button>
-            <Button variant="outline" asChild>
-              <a href="#vender">
-                Anunciar o que tenho <Plus />
-              </a>
+            <Button variant="outline" onClick={onCreate}>
+              Anunciar o que tenho <Plus />
+            </Button>
+            <Button variant="ghost" onClick={onDiscover}>
+              Descobrir uma troca <ArrowLeftRight />
             </Button>
           </div>
           <div className="hero-note">

@@ -10,7 +10,17 @@ import {
 } from "@/components/ui/dialog";
 import type { Listing } from "@/components/swap/data";
 
-export function ListingDialog({ listing, onClose }: { listing: Listing; onClose: () => void }) {
+export function ListingDialog({
+  listing,
+  onClose,
+  onContact,
+  onReport,
+}: {
+  listing: Listing;
+  onClose: () => void;
+  onContact: (listing: Listing) => void;
+  onReport: () => void;
+}) {
   const [mode, setMode] = useState<"details" | "proposal" | "purchase">("details");
   const [submitted, setSubmitted] = useState(false);
   const amount = `R$ ${listing.price.toFixed(2).replace(".", ",")}`;
@@ -33,9 +43,18 @@ export function ListingDialog({ listing, onClose }: { listing: Listing; onClose:
         {mode === "details" && (
           <>
             <div className="transaction-summary">
+              <p>{listing.description}</p>
               <p>
-                O anunciante aceita venda ou troca. Você pode oferecer um item e sugerir um
-                complemento em dinheiro; a decisão é do anunciante.
+                <strong>Anunciante:</strong> {listing.owner}
+              </p>
+              <p>
+                {listing.kind === "trade"
+                  ? "O anunciante busca uma troca."
+                  : listing.kind === "sale"
+                    ? "O anunciante aceita venda."
+                    : "O anunciante aceita venda ou troca."}{" "}
+                Você pode oferecer um item e sugerir um complemento em dinheiro; a decisão é do
+                anunciante.
               </p>
               <p>
                 <strong>Entrega:</strong>{" "}
@@ -45,9 +64,16 @@ export function ListingDialog({ listing, onClose }: { listing: Listing; onClose:
               </p>
             </div>
             <p className="prototype-note">
-              Prévia da interface: anúncios, pagamentos e conversas ainda não estão conectados.
+              Prévia local. Conversas abrem o WhatsApp do anunciante; negociação e pagamentos não
+              são gerenciados por este app.
             </p>
             <div className="transaction-actions">
+              <Button variant="outline" onClick={onReport}>
+                Denunciar
+              </Button>
+              <Button variant="outline" onClick={() => onContact(listing)}>
+                Chamar no WhatsApp
+              </Button>
               <Button
                 variant="brand"
                 onClick={() => {
@@ -109,7 +135,7 @@ export function ListingDialog({ listing, onClose }: { listing: Listing; onClose:
               </label>
               <p className="prototype-note">
                 Você pode sugerir valores; o anunciante avalia e pode aceitar, recusar ou fazer uma
-                contraproposta. Pagamentos e chat ainda não estão disponíveis nesta prévia.
+                contraproposta. A proposta não será enviada nem armazenada.
               </p>
               <div className="transaction-actions">
                 <Button type="button" variant="outline" onClick={() => setMode("details")}>

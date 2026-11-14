@@ -1,12 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { ArrowLeftRight, ArrowUpRight, AudioLines, GraduationCap, Sparkles, Gift, ArrowLeft } from 'lucide-react';
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import {
+  ArrowLeftRight,
+  ArrowUpRight,
+  AudioLines,
+  GraduationCap,
+  Sparkles,
+  Gift,
+  ArrowLeft,
+} from "lucide-react";
 
-export const Route = createFileRoute('/presente')({
+export const Route = createFileRoute("/presente")({
   head: () => ({
     meta: [
-      { title: 'TROCA — Presente para quem escaneou' },
-      { name: 'description', content: 'Você escaneou o QR code do evento TROCA na Unifor. Escolha uma assinatura gratuita.' },
+      { title: "TROCA — Presente para quem escaneou" },
+      {
+        name: "description",
+        content:
+          "Você escaneou o QR code do evento TROCA na Unifor. Escolha uma assinatura gratuita.",
+      },
     ],
   }),
   component: Presente,
@@ -14,31 +26,31 @@ export const Route = createFileRoute('/presente')({
 
 const offers = [
   {
-    id: 'streaming',
-    cat: 'STREAMING',
-    num: '01',
-    title: '1 mês de streaming',
-    desc: 'Vídeo, música e leitura sem anúncios para o seu descanso.',
+    id: "streaming",
+    cat: "STREAMING",
+    num: "01",
+    title: "1 mês de streaming",
+    desc: "Vídeo, música e leitura sem anúncios para o seu descanso.",
     icon: AudioLines,
-    color: 'stream-bg',
+    color: "stream-bg",
   },
   {
-    id: 'ferramenta',
-    cat: 'FERRAMENTAS',
-    num: '02',
-    title: '1 mês de ferramenta',
-    desc: 'IA de escrita, design ou produtividade para o seu semestre.',
+    id: "ferramenta",
+    cat: "FERRAMENTAS",
+    num: "02",
+    title: "1 mês de ferramenta",
+    desc: "IA de escrita, design ou produtividade para o seu semestre.",
     icon: Sparkles,
-    color: 'tool-bg',
+    color: "tool-bg",
   },
   {
-    id: 'curso',
-    cat: 'ESTUDOS',
-    num: '03',
-    title: '1 mês de curso',
-    desc: 'Idiomas, programação ou preparação para provas.',
+    id: "curso",
+    cat: "ESTUDOS",
+    num: "03",
+    title: "1 mês de curso",
+    desc: "Idiomas, programação ou preparação para provas.",
     icon: GraduationCap,
-    color: 'study-bg',
+    color: "study-bg",
   },
 ];
 
@@ -56,21 +68,21 @@ function Presente() {
   const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.add('motion-ready');
+    document.documentElement.classList.add("motion-ready");
     const observer = new IntersectionObserver(
       (entries) =>
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            entry.target.classList.add("visible");
             observer.unobserve(entry.target);
           }
         }),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
-    document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    document.querySelectorAll(".scroll-reveal").forEach((el) => observer.observe(el));
     return () => {
       observer.disconnect();
-      document.documentElement.classList.remove('motion-ready');
+      document.documentElement.classList.remove("motion-ready");
     };
   }, []);
 
@@ -92,21 +104,27 @@ function Presente() {
         <main>
           <section className="gift gift-page">
             <div className="container gift-confirmed reveal">
-              <div className={`category-icon ${offer.color}`} style={{ width: 72, height: 72, margin: '0 auto 24px' }}>
+              <div
+                className={`category-icon ${offer.color}`}
+                style={{ width: 72, height: 72, margin: "0 auto 24px" }}
+              >
                 <Icon size={34} strokeWidth={1.5} />
               </div>
-              <p className="gift-hint" style={{ margin: '0 auto 20px' }}>
-                <Gift size={13} /> RESGATADO COM SUCESSO
+              <p className="gift-hint" style={{ margin: "0 auto 20px" }}>
+                <Gift size={13} /> ESCOLHA DE DEMONSTRAÇÃO REGISTRADA
               </p>
-              <h1 className="gift-title" style={{ textAlign: 'center', margin: '0 0 16px' }}>
-                Aproveite o seu<br /><em>{offer.title}</em>
+              <h1 className="gift-title" style={{ textAlign: "center", margin: "0 0 16px" }}>
+                Sua escolha
+                <br />
+                <em>{offer.title}</em>
               </h1>
-              <p style={{ textAlign: 'center', maxWidth: 400, margin: '0 auto 28px' }}>
-                Em breve você receberá o acesso. Fique de olho no seu e-mail da Unifor.
+              <p style={{ textAlign: "center", maxWidth: 400, margin: "0 auto 28px" }}>
+                Esta é uma prévia local. Nenhum acesso foi enviado e nenhuma informação foi
+                guardada.
               </p>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <a href="/" className="gift-cta">
-                  Conhecer o TROCA <ArrowUpRight size={14} />
+                  Voltar ao TROCA <ArrowUpRight size={14} />
                 </a>
               </div>
             </div>
@@ -116,7 +134,9 @@ function Presente() {
           <div className="container">
             <div className="footer-bottom">
               <span>© 2026 TROCA. FEITO POR ALUNOS DA UNIFOR.</span>
-              <span>FORTALEZA — CE <span aria-hidden="true">↗</span></span>
+              <span>
+                FORTALEZA — CE <span aria-hidden="true">↗</span>
+              </span>
             </div>
           </div>
         </footer>
@@ -146,12 +166,13 @@ function Presente() {
                 <Gift size={13} /> EVENTO NO CAMPUS — PRESENTE PARA QUEM ESCANEOU
               </div>
               <h1 className="gift-title">
-                Você escaneou.<br />
+                Você escaneou.
+                <br />
                 Ganhou <em>1 de 3</em> assinaturas de graça.
               </h1>
               <p>
-                Esta página é exclusiva para quem leu o QR code do evento TROCA na
-                Unifor. Escolha uma das opções ao lado e aproveite de graça.
+                Escolha uma opção para registrar localmente nesta prévia; a página não valida QR
+                codes nem entrega assinaturas.
               </p>
               <div className="gift-note">
                 <Gift size={13} /> Válido apenas durante o evento. Uma escolha por pessoa.
@@ -167,7 +188,7 @@ function Presente() {
                   return (
                     <button
                       key={offer.id}
-                      className={`gift-card gift-card-pick${isSelected ? ' gift-card--selected' : ''}`}
+                      className={`gift-card gift-card-pick${isSelected ? " gift-card--selected" : ""}`}
                       onClick={() => setChosen(offer.id)}
                       type="button"
                       aria-pressed={isSelected}
@@ -178,7 +199,9 @@ function Presente() {
                       <div>
                         <h3>{offer.title}</h3>
                         <p>{offer.desc}</p>
-                        <small>{offer.num} · {offer.cat}</small>
+                        <small>
+                          {offer.num} · {offer.cat}
+                        </small>
                       </div>
                       <span className="gift-tag">GRÁTIS</span>
                     </button>
@@ -187,12 +210,18 @@ function Presente() {
               </div>
 
               <button
-                className={`gift-submit${chosen ? ' gift-submit--active' : ''}`}
+                className={`gift-submit${chosen ? " gift-submit--active" : ""}`}
                 disabled={!chosen}
                 onClick={() => chosen && setConfirmed(true)}
                 type="button"
               >
-                {chosen ? <>Resgatar agora <ArrowUpRight size={13} /></> : 'Escolha uma opção acima'}
+                {chosen ? (
+                  <>
+                    Resgatar agora <ArrowUpRight size={13} />
+                  </>
+                ) : (
+                  "Escolha uma opção acima"
+                )}
               </button>
             </div>
           </div>
@@ -203,7 +232,9 @@ function Presente() {
         <div className="container">
           <div className="footer-bottom">
             <span>© 2026 TROCA. FEITO POR ALUNOS DA UNIFOR.</span>
-            <span>FORTALEZA — CE <span aria-hidden="true">↗</span></span>
+            <span>
+              FORTALEZA — CE <span aria-hidden="true">↗</span>
+            </span>
           </div>
         </div>
       </footer>

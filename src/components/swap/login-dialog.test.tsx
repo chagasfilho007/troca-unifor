@@ -4,28 +4,42 @@ import { describe, expect, it, vi } from "vitest";
 import { LoginDialog } from "@/components/swap/login-dialog";
 
 describe("LoginDialog", () => {
-  it("shows email and password fields and can reveal the password", () => {
-    render(<LoginDialog onClose={vi.fn()} />);
+  it("validates the demo flow and returns only a temporary profile", () => {
+    const onDemoLogin = vi.fn();
+    render(<LoginDialog onClose={vi.fn()} onDemoLogin={onDemoLogin} />);
 
-    expect(screen.getByLabelText("E-mail da Unifor")).toHaveAttribute("type", "email");
-    expect(screen.getByLabelText("Senha")).toHaveAttribute("type", "password");
-
-    fireEvent.click(screen.getByRole("button", { name: "Mostrar senha" }));
-
-    expect(screen.getByLabelText("Senha")).toHaveAttribute("type", "text");
-  });
-
-  it("does not claim to authenticate or transmit form data", () => {
-    render(<LoginDialog onClose={vi.fn()} />);
-
-    fireEvent.change(screen.getByLabelText("E-mail da Unifor"), {
+    fireEvent.change(screen.getByLabelText("E-mail institucional"), {
       target: { value: "aluna@edu.unifor.br" },
     });
-    fireEvent.change(screen.getByLabelText("Senha"), { target: { value: "minha-senha" } });
-    fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
+    fireEvent.click(screen.getByRole("button", { name: "Continuar" }));
+    fireEvent.change(screen.getByLabelText("Código"), { target: { value: "123456" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar código" }));
 
-    expect(screen.getByRole("status")).toHaveTextContent(
-      "Esta prévia não enviou nem armazenou seus dados.",
-    );
+    fireEvent.change(screen.getByLabelText("Nome"), { target: { value: "Ana Silva" } });
+    fireEvent.change(screen.getByLabelText("Curso"), { target: { value: "Design" } });
+    fireEvent.change(screen.getByLabelText("Semestre"), { target: { value: "3" } });
+    fireEvent.change(screen.getByLabelText("WhatsApp com DDD"), {
+      target: { value: "85999999999" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Usar perfil demo" }));
+
+    expect(onDemoLogin).toHaveBeenCalledWith({
+      name: "Ana Silva",
+      course: "Design",
+      semester: "3",
+      whatsapp: "85999999999",
+      email: "aluna@edu.unifor.br",
+    });
+  });
+
+  it("rejects a non-institutional email without sending or storing anything", () => {
+    const onDemoLogin = vi.fn();
+    render(<LoginDialog onClose={vi.fn()} onDemoLogin={onDemoLogin} />);
+    fireEvent.change(screen.getByLabelText("E-mail institucional"), {
+      target: { value: "aluna@example.com" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Continuar" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("@edu.unifor.br");
+    expect(onDemoLogin).not.toHaveBeenCalled();
   });
 });
