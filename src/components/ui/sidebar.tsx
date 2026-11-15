@@ -31,9 +31,15 @@ function useSidebarMobile() {
   React.useEffect(() => {
     const mediaQuery = window.matchMedia(`(max-width: ${SIDEBAR_MOBILE_BREAKPOINT - 1}px)`);
     const update = () => setIsMobile(window.innerWidth < SIDEBAR_MOBILE_BREAKPOINT);
-    mediaQuery.addEventListener("change", update);
+    if (typeof mediaQuery.addEventListener === "function")
+      mediaQuery.addEventListener("change", update);
+    else mediaQuery.addListener(update);
     update();
-    return () => mediaQuery.removeEventListener("change", update);
+    return () => {
+      if (typeof mediaQuery.removeEventListener === "function")
+        mediaQuery.removeEventListener("change", update);
+      else mediaQuery.removeListener(update);
+    };
   }, []);
 
   return isMobile;

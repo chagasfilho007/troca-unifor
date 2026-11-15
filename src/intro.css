@@ -3,7 +3,9 @@
   position: relative;
   height: 600vh;
   overflow: clip;
+  background: #091018;
   background: oklch(0.13 0.02 255);
+  color: #ebeff2;
   color: oklch(0.96 0.006 250);
   font-family: var(--font-sans);
 }
@@ -16,7 +18,10 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 22px clamp(20px, 5vw, 72px);
+  padding: calc(22px + env(safe-area-inset-top, 0px))
+    calc(clamp(20px, 5vw, 72px) + env(safe-area-inset-right, 0px)) 22px
+    calc(clamp(20px, 5vw, 72px) + env(safe-area-inset-left, 0px));
+  background: linear-gradient(180deg, rgb(9 16 24 / 92%), transparent);
   background: linear-gradient(180deg, oklch(0.13 0.02 255 / 0.92), transparent);
 }
 .intro-logo {
@@ -63,6 +68,7 @@
 .intro-stage {
   position: sticky;
   top: 0;
+  height: 100vh;
   height: 100svh;
   min-height: 580px;
   overflow: hidden;
@@ -589,6 +595,14 @@
   border-radius: 999px;
   padding: 16px 22px;
 }
+.intro-skip,
+.intro-start,
+.intro-final-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
 .intro-finale-glow {
   position: absolute;
   width: min(70vw, 700px);
@@ -603,9 +617,11 @@
 
 @media (max-width: 760px) {
   .intro-top {
-    padding: 16px 18px;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) calc(18px + env(safe-area-inset-right, 0px))
+      16px calc(18px + env(safe-area-inset-left, 0px));
   }
   .intro-stage {
+    min-height: 100vh;
     min-height: 100svh;
   }
   .intro-scene:not(.intro-scene-0):not(.intro-scene-6) {
@@ -749,6 +765,7 @@
   }
   .intro-scroll {
     height: auto;
+    min-height: 100vh;
     min-height: 100svh;
     overflow: visible;
   }
@@ -792,5 +809,83 @@
   .intro-gift-card-0,
   .intro-gift-card-1 {
     transform: rotateY(180deg);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .intro-stage {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .intro-scene:not(.intro-scene-0):not(.intro-scene-6) {
+    gap: 18px;
+    padding-top: 76px;
+    padding-bottom: 20px;
+  }
+
+  .intro-copy h2 {
+    margin: 10px 0;
+    font-size: clamp(28px, 5vw, 44px);
+  }
+
+  .intro-copy p {
+    font-size: 13px;
+  }
+
+  .intro-demo-layout {
+    min-height: 220px;
+    padding: 16px;
+  }
+}
+
+@supports not (color: oklch(0.5 0 0)) {
+  .intro-stage::before {
+    background:
+      radial-gradient(ellipse at 74% 48%, rgb(74 224 255 / 17%), transparent 44%),
+      linear-gradient(135deg, #091018, #171f2b);
+  }
+
+  .intro-opening h1 {
+    color: #fff;
+  }
+
+  .intro-opening p,
+  .intro-opening > span,
+  .intro-copy p,
+  .intro-finale p {
+    color: #c0c8d3;
+  }
+
+  .intro-frame {
+    border-color: rgb(16 23 31 / 20%);
+    background: #f0f3f6;
+    color: #10171f;
+    box-shadow: 0 30px 90px rgb(0 0 0 / 52%);
+  }
+
+  .intro-window-bar {
+    border-color: rgb(16 23 31 / 10%);
+    background: #f8fafd;
+  }
+
+  .intro-demo-form,
+  .intro-demo-listing,
+  .intro-demo-search,
+  .intro-result {
+    border-color: rgb(16 23 31 / 12%);
+    background: #fff;
+    color: #10171f;
+  }
+
+  .intro-demo-field,
+  .intro-demo-form small,
+  .intro-demo-listing small,
+  .intro-demo-note {
+    color: #5c646f;
+  }
+
+  .intro-chat-bubble {
+    background: #ebeff4;
   }
 }

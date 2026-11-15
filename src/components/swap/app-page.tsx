@@ -10,6 +10,13 @@ export function AppPage({ children }: { children: ReactNode }) {
   const state = useAppState();
 
   useEffect(() => {
+    if (!("IntersectionObserver" in window)) {
+      document.querySelectorAll(".scroll-reveal").forEach((element) => {
+        element.classList.add("visible");
+      });
+      return;
+    }
+
     document.documentElement.classList.add("motion-ready");
     const observer = new IntersectionObserver(
       (entries) =>

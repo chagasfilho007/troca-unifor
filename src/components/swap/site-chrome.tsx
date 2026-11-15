@@ -129,7 +129,7 @@ export function SiteHeader({ onLogin, onSignOut, onCreateListing, user }: SiteHe
             <Button variant="ghost" className="nav-login" onClick={user ? onSignOut : onLogin}>
               {user ? `Sair (${user.name.split(" ")[0]})` : "Entrar"} <ArrowUpRight />
             </Button>
-            <Button variant="ink" onClick={onCreateListing}>
+            <Button variant="ink" className="nav-create" onClick={onCreateListing}>
               Anunciar <Plus />
             </Button>
             <Button
