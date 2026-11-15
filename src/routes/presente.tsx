@@ -9,15 +9,15 @@ import {
   Gift,
   ArrowLeft,
 } from "lucide-react";
+import { BRAND_NAME } from "@/lib/brand";
 
 export const Route = createFileRoute("/presente")({
   head: () => ({
     meta: [
-      { title: "TROCA — Presente para quem escaneou" },
+      { title: `${BRAND_NAME} — Presente para quem escaneou` },
       {
         name: "description",
-        content:
-          "Você escaneou o QR code do evento TROCA na Unifor. Escolha uma assinatura gratuita.",
+        content: `Você escaneou o QR code do evento ${BRAND_NAME} na Unifor. Escolha uma assinatura gratuita.`,
       },
     ],
   }),
@@ -56,9 +56,10 @@ const offers = [
 
 function Logo() {
   return (
-    <a href="/" className="logo" aria-label="TROCA, início">
+    <a href="/" className="logo" aria-label={`${BRAND_NAME}, início`}>
       <ArrowLeftRight className="logo-mark" />
-      TROCA<span className="logo-dot">.</span>
+      {BRAND_NAME}
+      <span className="logo-dot">.</span>
     </a>
   );
 }
@@ -124,7 +125,7 @@ function Presente() {
               </p>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <a href="/" className="gift-cta">
-                  Voltar ao TROCA <ArrowUpRight size={14} />
+                  Voltar à {BRAND_NAME} <ArrowUpRight size={14} />
                 </a>
               </div>
             </div>
@@ -133,7 +134,7 @@ function Presente() {
         <footer>
           <div className="container">
             <div className="footer-bottom">
-              <span>© 2026 TROCA. FEITO POR ALUNOS DA UNIFOR.</span>
+              <span>© 2026 {BRAND_NAME}. FEITO POR ALUNOS DA UNIFOR.</span>
               <span>
                 FORTALEZA — CE <span aria-hidden="true">↗</span>
               </span>
@@ -231,7 +232,7 @@ function Presente() {
       <footer>
         <div className="container">
           <div className="footer-bottom">
-            <span>© 2026 TROCA. FEITO POR ALUNOS DA UNIFOR.</span>
+            <span>© 2026 {BRAND_NAME}. FEITO POR ALUNOS DA UNIFOR.</span>
             <span>
               FORTALEZA — CE <span aria-hidden="true">↗</span>
             </span>

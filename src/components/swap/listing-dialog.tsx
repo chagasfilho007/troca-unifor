@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { Listing } from "@/components/swap/data";
+import { BRAND_NAME } from "@/lib/brand";
 
 export function ListingDialog({
   listing,
@@ -23,7 +24,8 @@ export function ListingDialog({
 }) {
   const [mode, setMode] = useState<"details" | "proposal" | "purchase">("details");
   const [submitted, setSubmitted] = useState(false);
-  const amount = `R$ ${listing.price.toFixed(2).replace(".", ",")}`;
+  const amount =
+    listing.price === null ? "Sem valor" : `R$ ${listing.price.toFixed(2).replace(".", ",")}`;
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
@@ -153,8 +155,8 @@ export function ListingDialog({
               Preço anunciado: <strong>{amount}</strong>
             </p>
             <p className="prototype-note">
-              O SWAP ainda não processa pagamentos. Esta ação é apenas demonstrativa e não inicia
-              uma compra.
+              A {BRAND_NAME} ainda não processa pagamentos. Esta ação é apenas demonstrativa e não
+              inicia uma compra.
             </p>
             <Button variant="outline" onClick={() => setMode("details")}>
               Voltar ao anúncio

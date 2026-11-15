@@ -16,12 +16,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { categories } from "@/components/swap/data";
 import type { DemoUser } from "@/components/swap/data";
+import { BRAND_NAME } from "@/lib/brand";
 
 export function Logo() {
   return (
-    <a href="#" className="logo" aria-label="SWAP, início">
+    <a href="/" className="logo" aria-label={`${BRAND_NAME}, início`}>
       <ArrowLeftRight className="logo-mark" />
-      SWAP<span className="logo-dot">.</span>
+      {BRAND_NAME}
+      <span className="logo-dot">.</span>
     </a>
   );
 }
@@ -250,7 +252,7 @@ export function SiteFooter({ onChooseCategory }: { onChooseCategory: (name: stri
             <a href="#gift">Presente de boas-vindas</a>
           </div>
           <div className="footer-col">
-            <h3>TROCA</h3>
+            <h3>{BRAND_NAME}</h3>
             <a href="#como-funciona">Como funciona</a>
             <a href="#seguranca">Segurança</a>
             <a href="https://www.unifor.br" target="_blank" rel="noreferrer">
@@ -259,7 +261,7 @@ export function SiteFooter({ onChooseCategory }: { onChooseCategory: (name: stri
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 TROCA. FEITO POR ALUNOS DA UNIFOR.</span>
+          <span>© 2026 {BRAND_NAME}. FEITO POR ALUNOS DA UNIFOR.</span>
           <span>
             FORTALEZA — CE <span aria-hidden="true">↗</span>
           </span>

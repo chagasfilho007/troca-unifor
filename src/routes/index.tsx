@@ -26,17 +26,18 @@ import { ListingDialog } from "@/components/swap/listing-dialog";
 import { ListingsSection } from "@/components/swap/listings-section";
 import { QuickActions } from "@/components/swap/quick-actions";
 import { SiteFooter, SiteHeader } from "@/components/swap/site-chrome";
+import { BRAND_NAME } from "@/lib/brand";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TROCA — Trocas, serviços e projetos da Unifor" },
+      { title: `${BRAND_NAME} — Trocas, serviços e projetos da Unifor` },
       {
         name: "description",
         content:
           "Sua assinatura parada vale mais trocada. Explore streaming, estudos, ferramentas e projetos na comunidade Unifor.",
       },
-      { property: "og:title", content: "TROCA — Conexões que valem mais" },
+      { property: "og:title", content: `${BRAND_NAME} — Conexões que valem mais` },
       {
         property: "og:description",
         content:
@@ -200,7 +201,7 @@ function Index() {
       setLoginOpen(true);
       return;
     }
-    const message = `Oi! Vi seu anúncio "${listing.name}" na TROCA e tenho interesse.`;
+    const message = `Oi! Vi seu anúncio "${listing.name}" na ${BRAND_NAME} e tenho interesse.`;
     window.open(
       `https://wa.me/55${listing.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`,
       "_blank",

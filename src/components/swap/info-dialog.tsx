@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { BRAND_NAME } from "@/lib/brand";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ export function InfoDialog({ title, onClose }: { title: string; onClose: () => v
   const description =
     title === "Programa de indicação"
       ? "A proposta do programa é liberar uma comissão a cada duas vendas confirmadas por indicação. O programa ainda não está disponível."
-      : "Esta é uma prévia do TROCA. O cadastro e a publicação de anúncios ainda não estão disponíveis.";
+      : `Esta é uma prévia da ${BRAND_NAME}. O cadastro e a publicação de anúncios ainda não estão disponíveis.`;
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>

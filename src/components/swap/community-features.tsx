@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { DemoUser } from "@/components/swap/data";
+import { BRAND_NAME } from "@/lib/brand";
 
 type Product = {
   id: number;
@@ -185,7 +186,7 @@ export function CommunityFeatures({
           .split(" ")[0]
           .toUpperCase()
           .replace(/[^A-Z]/g, "")
-          .slice(0, 6) || "TROCA"
+          .slice(0, 6) || "HUBORA"
       }-DEMO`
     : "";
 
@@ -221,7 +222,7 @@ export function CommunityFeatures({
     if (!cartItems.length) return;
     requireUser(() => {
       const message = [
-        "Oi! Quero comprar na loja de demonstração TROCA:",
+        `Oi! Quero comprar na loja de demonstração ${BRAND_NAME}:`,
         ...cartItems.map(
           (product) =>
             `${cart[product.id]}x ${product.name} - ${brl(product.price * cart[product.id])}`,
@@ -337,7 +338,7 @@ export function CommunityFeatures({
       )
     ) {
       setOwnerMessage(
-        "Revise os combos no formato quantidade | preço oficial | preço TROCA; o preço TROCA deve ser menor.",
+        `Revise os combos no formato quantidade | preço oficial | preço ${BRAND_NAME}; o preço ${BRAND_NAME} deve ser menor.`,
       );
       return;
     }
@@ -378,7 +379,7 @@ export function CommunityFeatures({
           <div className="section-eyebrow">Produtos ilustrativos</div>
           <div className="section-head">
             <div>
-              <h2>Loja do TROCA</h2>
+              <h2>Loja da {BRAND_NAME}</h2>
               <p>Catálogo de exemplo. Compras e pagamentos não são processados aqui.</p>
             </div>
             <Button variant="outline" onClick={() => setQuickGiftOpen(true)}>
@@ -844,7 +845,7 @@ export function CommunityFeatures({
                   />
                 </label>
                 <label>
-                  Combos: quantidade | preço oficial | preço TROCA
+                  Combos: quantidade | preço oficial | preço HuBora
                   <textarea
                     rows={5}
                     value={ownerTiers}

@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import deskImage from "@/assets/community-desk.jpg";
 import { categories, events } from "@/components/swap/data";
+import { BRAND_NAME, BRAND_TAGLINE } from "@/lib/brand";
 
 type CategoryAction = {
   onChooseCategory: (name: string) => void;
@@ -86,7 +87,8 @@ export function HeroSection({
         </div>
         <div className="hero-stage reveal">
           <h1 className="hero-wordmark">
-            SWAP<span className="wordmark-dot">.</span>
+            {BRAND_NAME}
+            <span className="wordmark-dot">.</span>
           </h1>
           {floatingCategories.map((category) => (
             <a
@@ -114,7 +116,7 @@ export function HeroSection({
           ))}
         </div>
         <div className="hero-bottom reveal">
-          <h2>Sua assinatura parada vale mais trocada.</h2>
+          <h2>{BRAND_TAGLINE}</h2>
           <p>Troque assinaturas, compartilhe talentos e descubra possibilidades na Unifor.</p>
           <div className="hero-ctas">
             <Button variant="brand" asChild>
