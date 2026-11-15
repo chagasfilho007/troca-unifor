@@ -89,7 +89,12 @@ export function QuickActions({
       if (event.key === "/" && !event.metaKey && !event.ctrlKey) {
         event.preventDefault();
         void navigate({ to: "/mural" });
-      } else if (event.key.toLowerCase() === "n") {
+      } else if (
+        event.key.toLowerCase() === "n" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey
+      ) {
         onCreate();
       } else if (event.key.toLowerCase() === "g") {
         goPrefixAt = Date.now();

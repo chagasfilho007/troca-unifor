@@ -15,7 +15,6 @@ export const categories = [
   {
     name: "Streaming",
     desc: "Vídeo, música e leitura. Troque o que você não usa mais.",
-    count: 38,
     icon: AudioLines,
     color: "stream-bg",
     id: "streaming",
@@ -23,7 +22,6 @@ export const categories = [
   {
     name: "Estudos",
     desc: "Cursos, idiomas e novas possibilidades para aprender.",
-    count: 29,
     icon: BookOpen,
     color: "study-bg",
     id: "estudos",
@@ -31,7 +29,6 @@ export const categories = [
   {
     name: "Ferramentas",
     desc: "IA, design e produtividade. Dê um upgrade na sua rotina.",
-    count: 52,
     icon: Sparkles,
     color: "tool-bg",
     id: "ferramentas",
@@ -39,7 +36,6 @@ export const categories = [
   {
     name: "Jogos",
     desc: "Jogos de tabuleiro e acessórios para jogar com a galera.",
-    count: 24,
     icon: Gamepad2,
     color: "game-bg",
     id: "jogos",
@@ -47,7 +43,6 @@ export const categories = [
   {
     name: "Serviços",
     desc: "Freelas, aulas e consultorias entre alunos.",
-    count: 0,
     icon: BriefcaseBusiness,
     color: "study-bg",
     id: "servicos",
@@ -55,7 +50,6 @@ export const categories = [
   {
     name: "Projetos",
     desc: "Código, scripts e templates para reaproveitar.",
-    count: 0,
     icon: Code2,
     color: "tool-bg",
     id: "projetos",
@@ -63,12 +57,13 @@ export const categories = [
   {
     name: "Infoprodutos",
     desc: "E-books, resumos e materiais de estudo.",
-    count: 0,
     icon: FileText,
     color: "game-bg",
     id: "infoprodutos",
   },
 ];
+
+export const DEMO_WHATSAPP_NUMBER = "00000000000";
 
 export type ListingStatus = "active" | "paused" | "completed" | "removed";
 export type ListingKind = "trade" | "sale" | "both";
@@ -111,7 +106,7 @@ export const listings: Listing[] = [
     color: "stream-bg",
     description: "Vaga no plano família até dezembro. Convite oficial.",
     owner: "Aline M.",
-    whatsapp: "85999990001",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 8,
@@ -128,7 +123,7 @@ export const listings: Listing[] = [
     color: "tool-bg",
     description: "Três meses restantes. Código ou cupom.",
     owner: "Pedro S.",
-    whatsapp: "85999990002",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 7,
@@ -145,7 +140,7 @@ export const listings: Listing[] = [
     color: "study-bg",
     description: "Acesso por 6 meses, com certificado.",
     owner: "Camila R.",
-    whatsapp: "85999990003",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 6,
@@ -162,7 +157,7 @@ export const listings: Listing[] = [
     color: "stream-bg",
     description: "Plano duo, uma vaga. Convite oficial.",
     owner: "Lucas P.",
-    whatsapp: "85999990004",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "trade",
     status: "active",
     createdAt: 5,
@@ -179,7 +174,7 @@ export const listings: Listing[] = [
     color: "game-bg",
     description: "Completo, jogado duas vezes. Encontro no campus.",
     owner: "Beatriz L.",
-    whatsapp: "85999990005",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 4,
@@ -196,7 +191,7 @@ export const listings: Listing[] = [
     color: "game-bg",
     description: "Funciona em qualquer PC. Encontro no campus.",
     owner: "Rafael T.",
-    whatsapp: "85999990006",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 3,
@@ -213,7 +208,7 @@ export const listings: Listing[] = [
     color: "study-bg",
     description: "Duas horas por semana na biblioteca.",
     owner: "Sofia A.",
-    whatsapp: "85999990007",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "trade",
     status: "active",
     createdAt: 2,
@@ -230,7 +225,7 @@ export const listings: Listing[] = [
     color: "tool-bg",
     description: "Licença de 1 ano. Entrega por código ou cupom.",
     owner: "Davi N.",
-    whatsapp: "85999990008",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "trade",
     status: "active",
     createdAt: 1,
@@ -247,7 +242,7 @@ export const listings: Listing[] = [
     color: "tool-bg",
     description: "HTML e CSS responsivo, pronto para adaptar.",
     owner: "Marcos V.",
-    whatsapp: "85999990009",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 9,
@@ -264,7 +259,7 @@ export const listings: Listing[] = [
     color: "game-bg",
     description: "Fórmulas e exercícios resolvidos.",
     owner: "Larissa B.",
-    whatsapp: "85999990010",
+    whatsapp: DEMO_WHATSAPP_NUMBER,
     kind: "both",
     status: "active",
     createdAt: 10,

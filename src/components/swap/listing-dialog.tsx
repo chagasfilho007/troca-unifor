@@ -66,15 +66,15 @@ export function ListingDialog({
               </p>
             </div>
             <p className="prototype-note">
-              Prévia local. Conversas abrem o WhatsApp do anunciante; negociação e pagamentos não
-              são gerenciados por este app.
+              Prévia local. Os botões de contato não abrem conversas, e nenhuma negociação ou
+              pagamento é iniciado por este app.
             </p>
             <div className="transaction-actions">
               <Button variant="outline" onClick={onReport}>
                 Denunciar
               </Button>
               <Button variant="outline" onClick={() => onContact(listing)}>
-                Chamar no WhatsApp
+                Simular contato
               </Button>
               <Button
                 variant="brand"

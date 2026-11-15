@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, Gift, ShoppingBag, Users } from "lucide-react";
+import { ArrowUpRight, ShoppingBag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { DemoUser } from "@/components/swap/data";
+import { GiftsContent } from "@/components/swap/gifts-content";
+import { PartnersContent } from "@/components/swap/partners-content";
 import { BRAND_NAME } from "@/lib/brand";
 
 type Product = {
@@ -121,12 +123,6 @@ const tierPrices = [
   { count: 7, official: 210, price: 122 },
   { count: 8, official: 240, price: 134 },
 ];
-const eventGifts = [
-  "1 mês de streaming",
-  "1 mês de ferramenta de IA, design ou produtividade",
-  "1 mês de curso ou preparação para provas",
-];
-
 function brl(value: number) {
   return `R$ ${value.toFixed(2).replace(".", ",")}`;
 }
@@ -160,7 +156,6 @@ export function CommunityFeatures({
   const [ownerUnlocked, setOwnerUnlocked] = useState(false);
   const [ownerPin, setOwnerPin] = useState("");
   const [ownerMessage, setOwnerMessage] = useState("");
-  const [storeWhatsapp, setStoreWhatsapp] = useState("5585999990000");
   const [ownerCatalog, setOwnerCatalog] = useState("");
   const [ownerGames, setOwnerGames] = useState("");
   const [ownerRewards, setOwnerRewards] = useState("");
@@ -223,44 +218,18 @@ export function CommunityFeatures({
   function checkout() {
     if (!cartItems.length) return;
     requireUser(() => {
-      const message = [
-        `Oi! Quero comprar na loja de demonstração ${BRAND_NAME}:`,
-        ...cartItems.map(
-          (product) =>
-            `${cart[product.id]}x ${product.name} - ${brl(product.price * cart[product.id])}`,
-        ),
-        `Total: ${brl(cartTotal)}`,
-        `Nome: ${user?.name ?? ""}`,
-      ].join("\n");
-      window.open(
-        `https://wa.me/${storeWhatsapp}?text=${encodeURIComponent(message)}`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-      setCart({});
-      onToast("Pedido de demonstração aberto no WhatsApp");
+      onToast("Pedido demonstrativo: nenhum contato ou pagamento foi iniciado.");
     });
   }
 
   function orderCombo() {
     if (combo.length !== tier) return;
     requireUser(() => {
-      const message = `Oi! Quero o combo de ${tier} itens (${brl(currentTier.price)} por mês): ${combo.join(", ")}`;
-      window.open(
-        `https://wa.me/${storeWhatsapp}?text=${encodeURIComponent(message)}`,
-        "_blank",
-        "noopener,noreferrer",
-      );
-      onToast("Pedido de demonstração aberto no WhatsApp");
+      onToast("Combo demonstrativo: nenhum contato ou pagamento foi iniciado.");
     });
   }
 
   function saveOwnerSettings() {
-    const digits = storeWhatsapp.replace(/\D/g, "");
-    if (digits.length < 12) {
-      setOwnerMessage("Informe um WhatsApp com código do país e DDD.");
-      return;
-    }
     const lines = ownerCatalog
       .split("\n")
       .map((line) => line.trim())
@@ -360,7 +329,6 @@ export function CommunityFeatures({
     const nextSalesTarget = Math.max(1, Number(salesTarget) || 1);
     const nextCommission = Math.min(100, Math.max(0, Number(commission) || 0));
     setOwnerMessage("");
-    setStoreWhatsapp(digits);
     setProducts(parsedProducts);
     setGameItems(nextGames);
     setRewardItems(nextRewards);
@@ -485,13 +453,12 @@ export function CommunityFeatures({
                     <b>{brl(cartTotal)}</b>
                   </div>
                   <Button variant="brand" onClick={checkout}>
-                    Finalizar pelo WhatsApp
+                    Pré-visualizar pedido
                   </Button>
                 </>
               )}
               <p className="prototype-note">
-                Finalizar apenas abre uma mensagem no WhatsApp; nenhum pagamento é iniciado pelo
-                site.
+                Pedidos são apenas demonstrativos; nenhum contato ou pagamento é iniciado pelo site.
               </p>
             </div>
             <Button
@@ -563,7 +530,7 @@ export function CommunityFeatures({
                   : combo.join(" · ")}
               </p>
               <Button variant="brand" disabled={combo.length !== tier} onClick={orderCombo}>
-                Pedir pelo WhatsApp
+                Registrar combo demonstrativo
               </Button>
             </div>
           </div>
@@ -571,170 +538,36 @@ export function CommunityFeatures({
       )}
 
       {(page === "all" || page === "gifts") && (
-        <section className="market community-extras" id="gift">
-          <div className="container">
-            <div className="section-eyebrow">
-              <Gift size={14} /> Presente de boas-vindas
-            </div>
-            <h2>Escolha 2 assinaturas de demonstração</h2>
-            <p>Uma escolha por perfil local. Nenhuma assinatura será entregue automaticamente.</p>
-            {claimedWelcomeGift ? (
-              <p className="prototype-note">
-                Seleção de demonstração: {claimedWelcomeGift.join(" e ")}.
-              </p>
-            ) : (
-              <>
-                <div className="combo-options">
-                  {gameItems.map((item) => {
-                    const checked = welcomeGift.includes(item);
-                    return (
-                      <button
-                        className={`combo-option${checked ? " selected" : ""}`}
-                        key={item}
-                        type="button"
-                        aria-pressed={checked}
-                        disabled={!checked && welcomeGift.length >= 2}
-                        onClick={() =>
-                          setWelcomeGift((current) =>
-                            checked
-                              ? current.filter((entry) => entry !== item)
-                              : [...current, item],
-                          )
-                        }
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
-                </div>
-                <Button
-                  variant="brand"
-                  disabled={welcomeGift.length !== 2}
-                  onClick={() =>
-                    requireUser(() => {
-                      setClaimedWelcomeGift(welcomeGift);
-                      onToast("Presente salvo nesta sessão de demonstração");
-                    })
-                  }
-                >
-                  Resgatar meu presente
-                </Button>
-              </>
-            )}
-          </div>
-        </section>
-      )}
-
-      {(page === "all" || page === "gifts") && (
-        <section className="market community-extras" id="presente-evento">
-          <div className="container event-panel">
-            <div className="section-eyebrow">
-              <Gift size={14} /> Ação no campus
-            </div>
-            <h2>Presente do evento</h2>
-            {eventGift ? (
-              <p>Você escolheu: {eventGift}.</p>
-            ) : (
-              <>
-                <p>Escolha 1 opção de demonstração. Uma escolha local por perfil.</p>
-                <div className="combo-options">
-                  {eventGifts.map((item) => (
-                    <button
-                      className="combo-option"
-                      key={item}
-                      type="button"
-                      onClick={() =>
-                        requireUser(() => {
-                          setEventGift(item);
-                          onToast("Presente escolhido nesta sessão");
-                        })
-                      }
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </section>
+        <GiftsContent
+          gameItems={gameItems}
+          welcomeGift={welcomeGift}
+          setWelcomeGift={setWelcomeGift}
+          claimedWelcomeGift={claimedWelcomeGift}
+          setClaimedWelcomeGift={setClaimedWelcomeGift}
+          eventGift={eventGift}
+          setEventGift={setEventGift}
+          requireUser={requireUser}
+          onToast={onToast}
+        />
       )}
 
       {(page === "all" || page === "partners") && (
-        <section className="affiliate community-affiliate" id="partners">
-          <div className="container">
-            <div className="affiliate-layout">
-              <div>
-                <div className="section-eyebrow">
-                  <Users size={14} /> Programa de parceiros
-                </div>
-                <h2>
-                  Indique. Conecte.
-                  <br />
-                  <em>Ganhe com a comunidade.</em>
-                </h2>
-                <p>
-                  Progresso e recompensas são apenas uma simulação local, sem vendas nem comissão
-                  reais.
-                </p>
-                {!user ? (
-                  <Button variant="brand" onClick={onLogin}>
-                    Entrar na demonstração
-                  </Button>
-                ) : (
-                  <div className="partner-progress">
-                    <strong>Seu código: {referralCode}</strong>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        if (navigator.clipboard)
-                          void navigator.clipboard.writeText(referralCode).then(
-                            () => onToast("Código copiado"),
-                            () => onToast(`Seu código: ${referralCode}`),
-                          );
-                        else onToast(`Seu código: ${referralCode}`);
-                      }}
-                    >
-                      Copiar código
-                    </Button>
-                    <Button variant="outline" onClick={() => setReferrals((value) => value + 1)}>
-                      Simular indicação
-                    </Button>
-                    <p>
-                      Indicações: {referrals}/{referralTarget} · vendas: {sales}/{salesTarget} ·
-                      comissão demonstrativa: {commission}%
-                    </p>
-                    <Button variant="outline" onClick={() => setSales((value) => value + 1)}>
-                      Simular venda confirmada
-                    </Button>
-                    {referrals >= referralTarget && !reward && (
-                      <div className="combo-options">
-                        <p>Escolha sua recompensa de demonstração:</p>
-                        {rewardItems.map((item) => (
-                          <button
-                            key={item}
-                            type="button"
-                            className="combo-option"
-                            onClick={() => {
-                              setReward(item);
-                              onToast("Recompensa escolhida nesta sessão");
-                            }}
-                          >
-                            {item}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                    {reward && <p>Recompensa selecionada: {reward}.</p>}
-                  </div>
-                )}
-              </div>
-              <div className="affiliate-stat">
-                2×<small>VENDAS PARA LIBERAR A COMISSÃO</small>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PartnersContent
+          user={user}
+          onLogin={onLogin}
+          onToast={onToast}
+          referralCode={referralCode}
+          referrals={referrals}
+          setReferrals={setReferrals}
+          referralTarget={referralTarget}
+          sales={sales}
+          setSales={setSales}
+          salesTarget={salesTarget}
+          commission={commission}
+          rewardItems={rewardItems}
+          reward={reward}
+          setReward={setReward}
+        />
       )}
 
       {(page === "all" || page === "store") && quickGiftOpen && (
@@ -743,7 +576,7 @@ export function CommunityFeatures({
             <DialogHeader>
               <DialogTitle>Carrinho de demonstração</DialogTitle>
               <DialogDescription>
-                Revise produtos e quantidades antes de abrir o WhatsApp.
+                Revise os produtos e quantidades do pedido demonstrativo.
               </DialogDescription>
             </DialogHeader>
             <p>
@@ -763,7 +596,7 @@ export function CommunityFeatures({
                   checkout();
                 }}
               >
-                Finalizar
+                Concluir demonstração
               </Button>
             </div>
           </DialogContent>
@@ -831,13 +664,6 @@ export function CommunityFeatures({
               </form>
             ) : (
               <div className="proposal-form">
-                <label>
-                  WhatsApp da loja
-                  <input
-                    value={storeWhatsapp}
-                    onChange={(event) => setStoreWhatsapp(event.target.value)}
-                  />
-                </label>
                 <label>
                   Produtos: Nome | Categoria | Preço | Preço oficial | Descrição
                   <textarea

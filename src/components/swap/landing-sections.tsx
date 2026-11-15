@@ -37,8 +37,7 @@ export function HeroSection({
       number: "01",
       cat: "STREAMING",
       name: "Vídeo & música",
-      foot: "trocas ativas",
-      count: "38",
+      foot: "Explore no mural",
     },
     {
       cls: "float-tools",
@@ -46,8 +45,7 @@ export function HeroSection({
       number: "03",
       cat: "FERRAMENTAS",
       name: "IA & software",
-      foot: "trocas ativas",
-      count: "52",
+      foot: "Explore no mural",
     },
     {
       cls: "float-study",
@@ -55,8 +53,7 @@ export function HeroSection({
       number: "02",
       cat: "ESTUDOS",
       name: "Cursos & idiomas",
-      foot: "trocas ativas",
-      count: "29",
+      foot: "Explore no mural",
     },
     {
       cls: "float-service",
@@ -64,8 +61,7 @@ export function HeroSection({
       number: "04",
       cat: "SERVIÇOS",
       name: "Projetos & freela",
-      foot: "anúncios",
-      count: "17",
+      foot: "Explore no mural",
     },
   ];
   const categoryByLabel: Record<string, string> = {
@@ -111,7 +107,6 @@ export function HeroSection({
               <h3>{category.name}</h3>
               <div className="float-foot">
                 <span>{category.foot}</span>
-                <span>{category.count}</span>
               </div>
             </Link>
           ))}
@@ -183,9 +178,7 @@ export function CategoryGrid({
               <div>
                 <h3>{category.name}</h3>
                 <p>{category.desc}</p>
-                <small>
-                  {category.count} ANÚNCIOS <span aria-hidden="true">↗</span>
-                </small>
+                <small>EXPLORAR CATEGORIA</small>
               </div>
               <ArrowUpRight size={19} />
             </Link>
