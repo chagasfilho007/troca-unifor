@@ -1,4 +1,5 @@
 import { ArrowLeftRight, Heart, Search, Truck, X, Zap } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -180,6 +181,45 @@ export function ListingsSection({
           Prévia local: anúncios e perfil não são enviados nem salvos em um servidor. Combine tudo
           com cuidado e nunca compartilhe senhas.
         </p>
+      </div>
+    </section>
+  );
+}
+
+export function FeaturedListingsSection({
+  listings,
+  savedIds,
+  onSavedToggle,
+  onListingSelect,
+}: Pick<ListingsSectionProps, "listings" | "savedIds" | "onSavedToggle" | "onListingSelect">) {
+  const featured = listings.slice(0, 4);
+
+  return (
+    <section className="listings">
+      <div className="container">
+        <div className="section-eyebrow">Da comunidade</div>
+        <div className="section-head">
+          <div>
+            <h2>Em destaque agora</h2>
+            <p>Ideias para encontrar o que você procura.</p>
+          </div>
+          <Button variant="outline" asChild>
+            <Link to="/mural">Explorar o mural</Link>
+          </Button>
+        </div>
+        <div className="listing-grid">
+          {featured.map((listing) => (
+            <ListingCard
+              key={listing.id}
+              listing={listing}
+              saved={savedIds.includes(listing.id)}
+              managed={false}
+              onSavedToggle={() => onSavedToggle(listing.id)}
+              onSelect={() => onListingSelect(listing)}
+              onManage={() => {}}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

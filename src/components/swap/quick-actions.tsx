@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowUp, Command, Search } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import { categories } from "@/components/swap/data";
@@ -14,13 +15,13 @@ import {
 type View = "mural" | "saved" | "mine";
 
 const destinations = [
-  { title: "Loja", id: "loja" },
-  { title: "Combos de jogos", id: "combos" },
-  { title: "Programa de parceiros", id: "partners" },
-  { title: "Presente de boas-vindas", id: "gift" },
-  { title: "Presente do evento", id: "presente-evento" },
-  { title: "Como funciona", id: "como-funciona" },
-];
+  { title: "Início", to: "/inicio" },
+  { title: "Loja e combos", to: "/loja" },
+  { title: "Programa de parceiros", to: "/parceiros" },
+  { title: "Presentes", to: "/presentes" },
+  { title: "Segurança", to: "/seguranca" },
+  { title: "Como funciona", to: "/inicio", hash: "como-funciona" },
+] as const;
 
 export function QuickActions({
   onView,
@@ -37,6 +38,7 @@ export function QuickActions({
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const actions = useMemo(
     () => [
@@ -48,16 +50,21 @@ export function QuickActions({
         ["Salvos", "saved"],
         ["Meus anúncios", "mine"],
       ].map(([title, view]) => ({ title, run: () => onView(view as View) })),
-      ...destinations.map(({ title, id }) => ({
-        title,
-        run: () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }),
+      ...destinations.map((destination) => ({
+        title: destination.title,
+        run: () =>
+          void navigate(
+            "hash" in destination
+              ? { to: destination.to, hash: destination.hash }
+              : { to: destination.to },
+          ),
       })),
       ...categories.map(({ name }) => ({
         title: `Categoria: ${name}`,
         run: () => onCategory(name),
       })),
     ],
-    [onCategory, onCreate, onDiscover, onLogin, onView],
+    [navigate, onCategory, onCreate, onDiscover, onLogin, onView],
   );
   const visibleActions = actions.filter((action) =>
     action.title.toLocaleLowerCase("pt-BR").includes(query.trim().toLocaleLowerCase("pt-BR")),
@@ -81,8 +88,7 @@ export function QuickActions({
         return;
       if (event.key === "/" && !event.metaKey && !event.ctrlKey) {
         event.preventDefault();
-        document.getElementById("listing-search")?.focus();
-        document.getElementById("anuncios")?.scrollIntoView({ behavior: "smooth" });
+        void navigate({ to: "/mural" });
       } else if (event.key.toLowerCase() === "n") {
         onCreate();
       } else if (event.key.toLowerCase() === "g") {
@@ -96,7 +102,7 @@ export function QuickActions({
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onCreate, onView, open]);
+  }, [navigate, onCreate, onView, open]);
 
   return (
     <>

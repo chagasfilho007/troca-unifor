@@ -14,17 +14,16 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { categories } from "@/components/swap/data";
 import type { DemoUser } from "@/components/swap/data";
 import { BRAND_NAME } from "@/lib/brand";
 
 export function Logo() {
   return (
-    <a href="/" className="logo" aria-label={`${BRAND_NAME}, início`}>
+    <Link to="/inicio" className="logo" aria-label={`${BRAND_NAME}, início`}>
       <ArrowLeftRight className="logo-mark" />
       {BRAND_NAME}
       <span className="logo-dot">.</span>
-    </a>
+    </Link>
   );
 }
 
@@ -33,16 +32,9 @@ type SiteHeaderProps = {
   onSignOut: () => void;
   onCreateListing: () => void;
   user: DemoUser | null;
-  onChooseCategory: (name: string) => void;
 };
 
-export function SiteHeader({
-  onLogin,
-  onSignOut,
-  onCreateListing,
-  user,
-  onChooseCategory,
-}: SiteHeaderProps) {
+export function SiteHeader({ onLogin, onSignOut, onCreateListing, user }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"auto" | "light" | "dark">("auto");
   const [sound, setSound] = useState(true);
@@ -87,11 +79,6 @@ export function SiteHeader({
     };
   }, [sound]);
 
-  const chooseCategory = (name: string) => {
-    onChooseCategory(name);
-    setMenuOpen(false);
-  };
-
   const toggleTheme = () => {
     const next = theme === "auto" ? "dark" : theme === "dark" ? "light" : "auto";
     setTheme(next);
@@ -117,7 +104,7 @@ export function SiteHeader({
         <div className="container">
           <span>FEITO POR ALUNOS. PARA ALUNOS.</span>
           <div className="topbar-links">
-            <a href="/presente">PRESENTE DO EVENTO</a>
+            <Link to="/presentes">PRESENTES</Link>
             <a href="https://www.unifor.br" target="_blank" rel="noreferrer">
               COMUNIDADE UNIFOR <ArrowUpRight size={11} />
             </a>
@@ -129,16 +116,15 @@ export function SiteHeader({
           <div className="nav-left">
             <Logo />
             <nav className="nav-links" aria-label="Principal">
-              {categories.map((category) => (
-                <a key={category.id} href="#anuncios" onClick={() => chooseCategory(category.name)}>
-                  {category.name}
-                </a>
-              ))}
+              <Link to="/mural">Mural</Link>
+              <Link to="/loja">Loja</Link>
+              <Link to="/presentes">Presentes</Link>
+              <Link to="/parceiros">Parceiros</Link>
+              <Link to="/inicio" hash="como-funciona">
+                Como funciona
+              </Link>
             </nav>
           </div>
-          <Link to="/presente" className="nav-gift">
-            <Gift size={13} /> ASSINATURAS GRÁTIS
-          </Link>
           <div className="nav-actions">
             <Button variant="ghost" className="nav-login" onClick={user ? onSignOut : onLogin}>
               {user ? `Sair (${user.name.split(" ")[0]})` : "Entrar"} <ArrowUpRight />
@@ -178,14 +164,21 @@ export function SiteHeader({
         </div>
         {menuOpen && (
           <nav className="mobile-menu" aria-label="Menu móvel">
-            {categories.map((category) => (
-              <a key={category.id} href="#anuncios" onClick={() => chooseCategory(category.name)}>
-                {category.name}
-              </a>
-            ))}
-            <a href="#vender" onClick={() => setMenuOpen(false)}>
-              Serviços & projetos
-            </a>
+            <Link to="/mural" onClick={() => setMenuOpen(false)}>
+              Mural
+            </Link>
+            <Link to="/loja" onClick={() => setMenuOpen(false)}>
+              Loja
+            </Link>
+            <Link to="/presentes" onClick={() => setMenuOpen(false)}>
+              Presentes
+            </Link>
+            <Link to="/parceiros" onClick={() => setMenuOpen(false)}>
+              Parceiros
+            </Link>
+            <Link to="/inicio" hash="como-funciona" onClick={() => setMenuOpen(false)}>
+              Como funciona
+            </Link>
             <button
               type="button"
               className="mobile-menu-action"
@@ -196,12 +189,6 @@ export function SiteHeader({
             >
               <Plus size={15} /> Anunciar
             </button>
-            <a href="#como-funciona" onClick={() => setMenuOpen(false)}>
-              Como funciona
-            </a>
-            <Link to="/presente" className="mobile-menu-gift" onClick={() => setMenuOpen(false)}>
-              <Gift size={15} /> Assinaturas grátis
-            </Link>
             <button
               type="button"
               className="mobile-menu-action"
@@ -220,7 +207,7 @@ export function SiteHeader({
   );
 }
 
-export function SiteFooter({ onChooseCategory }: { onChooseCategory: (name: string) => void }) {
+export function SiteFooter() {
   return (
     <footer>
       <div className="container">
@@ -234,27 +221,20 @@ export function SiteFooter({ onChooseCategory }: { onChooseCategory: (name: stri
           </div>
           <div className="footer-col">
             <h3>Explore</h3>
-            {categories.map((category) => (
-              <a href="#anuncios" key={category.id} onClick={() => onChooseCategory(category.name)}>
-                {category.name}
-              </a>
-            ))}
+            <Link to="/mural">Mural</Link>
+            <Link to="/loja">Loja</Link>
+            <Link to="/presentes">Presentes</Link>
           </div>
           <div className="footer-col">
             <h3>Na comunidade</h3>
-            <a href="#vender">Serviços & projetos</a>
-            <a href="#anuncios" onClick={() => onChooseCategory("Todos")}>
-              Mural de trocas
-            </a>
-            <a href="#indique">Programa de indicação</a>
-            <a href="#loja">Loja e carrinho demo</a>
-            <a href="#combos">Combos de jogos</a>
-            <a href="#gift">Presente de boas-vindas</a>
+            <Link to="/parceiros">Parceiros</Link>
+            <Link to="/seguranca">Segurança e regras</Link>
           </div>
           <div className="footer-col">
             <h3>{BRAND_NAME}</h3>
-            <a href="#como-funciona">Como funciona</a>
-            <a href="#seguranca">Segurança</a>
+            <Link to="/inicio" hash="como-funciona">
+              Como funciona
+            </Link>
             <a href="https://www.unifor.br" target="_blank" rel="noreferrer">
               Conheça a Unifor ↗
             </a>

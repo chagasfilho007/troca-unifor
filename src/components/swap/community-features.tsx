@@ -135,10 +135,12 @@ export function CommunityFeatures({
   user,
   onLogin,
   onToast,
+  page = "all",
 }: {
   user: DemoUser | null;
   onLogin: () => void;
   onToast: (message: string) => void;
+  page?: "all" | "store" | "combos" | "gifts" | "partners";
 }) {
   const [products, setProducts] = useState(initialProducts);
   const [gameItems, setGameItems] = useState(gameCatalog);
@@ -374,352 +376,368 @@ export function CommunityFeatures({
 
   return (
     <>
-      <section className="market community-shop" id="loja">
-        <div className="container">
-          <div className="section-eyebrow">Produtos ilustrativos</div>
-          <div className="section-head">
-            <div>
-              <h2>Loja da {BRAND_NAME}</h2>
-              <p>Catálogo de exemplo. Compras e pagamentos não são processados aqui.</p>
-            </div>
-            <Button variant="outline" onClick={() => setQuickGiftOpen(true)}>
-              <ShoppingBag size={15} /> Carrinho ({Object.values(cart).reduce((a, b) => a + b, 0)})
-            </Button>
-          </div>
-          <div className="feature-chip-row" aria-label="Categorias da loja">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant="outline"
-                className={shopCategory === category ? "selected" : ""}
-                onClick={() => setShopCategory(category)}
-              >
-                {category}
+      {(page === "all" || page === "store") && (
+        <section className="market community-shop" id="loja">
+          <div className="container">
+            <div className="section-eyebrow">Produtos ilustrativos</div>
+            <div className="section-head">
+              <div>
+                <h2>Loja da {BRAND_NAME}</h2>
+                <p>Catálogo de exemplo. Compras e pagamentos não são processados aqui.</p>
+              </div>
+              <Button variant="outline" onClick={() => setQuickGiftOpen(true)}>
+                <ShoppingBag size={15} /> Carrinho ({Object.values(cart).reduce((a, b) => a + b, 0)}
+                )
               </Button>
-            ))}
-          </div>
-          <div className="product-grid">
-            {visibleProducts.map((product) => (
-              <article className="product-card" key={product.id}>
-                <div className="product-cover">
-                  {product.image ? (
-                    <img
-                      src={product.image}
-                      alt=""
-                      onError={(event) => event.currentTarget.remove()}
-                    />
-                  ) : (
-                    <span>{product.name.slice(0, 1)}</span>
-                  )}
-                  {product.regularPrice > product.price && (
-                    <small>-{Math.round((1 - product.price / product.regularPrice) * 100)}%</small>
-                  )}
-                </div>
-                <div className="product-card-body">
-                  <span className="tag">{product.category}</span>
-                  <h3>{product.name}</h3>
-                  <p>{product.description}</p>
-                  <strong>{brl(product.price)}</strong>
-                  {product.regularPrice > product.price && <del>{brl(product.regularPrice)}</del>}
-                  <Button
-                    variant={cart[product.id] ? "outline" : "brand"}
-                    onClick={() => updateCart(product.id, 1)}
-                  >
-                    {cart[product.id]
-                      ? `No carrinho (${cart[product.id]})`
-                      : "Adicionar ao carrinho"}
-                  </Button>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="cart-panel">
-            <h3>Seu carrinho</h3>
-            {cartItems.length === 0 ? (
-              <p>Seu carrinho está vazio.</p>
-            ) : (
-              <>
-                {cartItems.map((product) => (
-                  <div className="cart-line" key={product.id}>
-                    <span>{product.name}</span>
-                    <span>{brl(product.price * cart[product.id])}</span>
-                    <div className="cart-quantity">
-                      <Button
-                        variant="outline"
-                        aria-label={`Diminuir ${product.name}`}
-                        onClick={() => updateCart(product.id, -1)}
-                      >
-                        −
-                      </Button>
-                      {cart[product.id]}
-                      <Button
-                        variant="outline"
-                        aria-label={`Aumentar ${product.name}`}
-                        onClick={() => updateCart(product.id, 1)}
-                      >
-                        +
-                      </Button>
-                    </div>
+            </div>
+            <div className="feature-chip-row" aria-label="Categorias da loja">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant="outline"
+                  className={shopCategory === category ? "selected" : ""}
+                  onClick={() => setShopCategory(category)}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+            <div className="product-grid">
+              {visibleProducts.map((product) => (
+                <article className="product-card" key={product.id}>
+                  <div className="product-cover">
+                    {product.image ? (
+                      <img
+                        src={product.image}
+                        alt=""
+                        onError={(event) => event.currentTarget.remove()}
+                      />
+                    ) : (
+                      <span>{product.name.slice(0, 1)}</span>
+                    )}
+                    {product.regularPrice > product.price && (
+                      <small>
+                        -{Math.round((1 - product.price / product.regularPrice) * 100)}%
+                      </small>
+                    )}
+                  </div>
+                  <div className="product-card-body">
+                    <span className="tag">{product.category}</span>
+                    <h3>{product.name}</h3>
+                    <p>{product.description}</p>
+                    <strong>{brl(product.price)}</strong>
+                    {product.regularPrice > product.price && <del>{brl(product.regularPrice)}</del>}
                     <Button
-                      variant="ghost"
-                      onClick={() =>
-                        setCart((current) => {
-                          const next = { ...current };
-                          delete next[product.id];
-                          return next;
-                        })
-                      }
+                      variant={cart[product.id] ? "outline" : "brand"}
+                      onClick={() => updateCart(product.id, 1)}
                     >
-                      Remover
+                      {cart[product.id]
+                        ? `No carrinho (${cart[product.id]})`
+                        : "Adicionar ao carrinho"}
                     </Button>
                   </div>
-                ))}
-                <div className="cart-total">
-                  <b>Total</b>
-                  <b>{brl(cartTotal)}</b>
-                </div>
-                <Button variant="brand" onClick={checkout}>
-                  Finalizar pelo WhatsApp
-                </Button>
-              </>
-            )}
-            <p className="prototype-note">
-              Finalizar apenas abre uma mensagem no WhatsApp; nenhum pagamento é iniciado pelo site.
-            </p>
-          </div>
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setOwnerMessage("");
-              setOwnerOpen(true);
-            }}
-          >
-            Área de configuração da loja <ArrowUpRight size={14} />
-          </Button>
-        </div>
-      </section>
-
-      <section className="market community-extras" id="combos">
-        <div className="container">
-          <div className="section-eyebrow">Monte do seu jeito</div>
-          <h2>Combos de jogos</h2>
-          <p>Escolha o tamanho do combo e os itens. Valores de exemplo, sem cobrança.</p>
-          <div className="feature-chip-row">
-            {tiers.map((item) => (
-              <Button
-                key={item.count}
-                variant="outline"
-                className={tier === item.count ? "selected" : ""}
-                onClick={() => {
-                  setTier(item.count);
-                  setCombo((current) => current.slice(0, item.count));
-                }}
-              >
-                {item.count} itens · {brl(item.price)}
-              </Button>
-            ))}
-          </div>
-          <div className="combo-options">
-            {gameItems.map((item) => {
-              const checked = combo.includes(item);
-              return (
-                <button
-                  className={`combo-option${checked ? " selected" : ""}`}
-                  type="button"
-                  key={item}
-                  disabled={!checked && combo.length >= tier}
-                  aria-pressed={checked}
-                  onClick={() =>
-                    setCombo((current) =>
-                      checked ? current.filter((entry) => entry !== item) : [...current, item],
-                    )
-                  }
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-          <div className="combo-summary">
-            <h3>
-              Combo de {tier} itens · {brl(currentTier.price)} por mês
-            </h3>
-            <p>
-              Preço oficial somado: <del>{brl(currentTier.official)}</del> · economia de{" "}
-              {Math.round((1 - currentTier.price / currentTier.official) * 100)}%
-            </p>
-            <p>
-              {combo.length < tier
-                ? `Escolha mais ${tier - combo.length} item(ns).`
-                : combo.join(" · ")}
-            </p>
-            <Button variant="brand" disabled={combo.length !== tier} onClick={orderCombo}>
-              Pedir pelo WhatsApp
+                </article>
+              ))}
+            </div>
+            <div className="cart-panel">
+              <h3>Seu carrinho</h3>
+              {cartItems.length === 0 ? (
+                <p>Seu carrinho está vazio.</p>
+              ) : (
+                <>
+                  {cartItems.map((product) => (
+                    <div className="cart-line" key={product.id}>
+                      <span>{product.name}</span>
+                      <span>{brl(product.price * cart[product.id])}</span>
+                      <div className="cart-quantity">
+                        <Button
+                          variant="outline"
+                          aria-label={`Diminuir ${product.name}`}
+                          onClick={() => updateCart(product.id, -1)}
+                        >
+                          −
+                        </Button>
+                        {cart[product.id]}
+                        <Button
+                          variant="outline"
+                          aria-label={`Aumentar ${product.name}`}
+                          onClick={() => updateCart(product.id, 1)}
+                        >
+                          +
+                        </Button>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        onClick={() =>
+                          setCart((current) => {
+                            const next = { ...current };
+                            delete next[product.id];
+                            return next;
+                          })
+                        }
+                      >
+                        Remover
+                      </Button>
+                    </div>
+                  ))}
+                  <div className="cart-total">
+                    <b>Total</b>
+                    <b>{brl(cartTotal)}</b>
+                  </div>
+                  <Button variant="brand" onClick={checkout}>
+                    Finalizar pelo WhatsApp
+                  </Button>
+                </>
+              )}
+              <p className="prototype-note">
+                Finalizar apenas abre uma mensagem no WhatsApp; nenhum pagamento é iniciado pelo
+                site.
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setOwnerMessage("");
+                setOwnerOpen(true);
+              }}
+            >
+              Área de configuração da loja <ArrowUpRight size={14} />
             </Button>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="market community-extras" id="gift">
-        <div className="container">
-          <div className="section-eyebrow">
-            <Gift size={14} /> Presente de boas-vindas
-          </div>
-          <h2>Escolha 2 assinaturas de demonstração</h2>
-          <p>Uma escolha por perfil local. Nenhuma assinatura será entregue automaticamente.</p>
-          {claimedWelcomeGift ? (
-            <p className="prototype-note">
-              Seleção de demonstração: {claimedWelcomeGift.join(" e ")}.
-            </p>
-          ) : (
-            <>
-              <div className="combo-options">
-                {gameItems.map((item) => {
-                  const checked = welcomeGift.includes(item);
-                  return (
-                    <button
-                      className={`combo-option${checked ? " selected" : ""}`}
-                      key={item}
-                      type="button"
-                      aria-pressed={checked}
-                      disabled={!checked && welcomeGift.length >= 2}
-                      onClick={() =>
-                        setWelcomeGift((current) =>
-                          checked ? current.filter((entry) => entry !== item) : [...current, item],
-                        )
-                      }
-                    >
-                      {item}
-                    </button>
-                  );
-                })}
-              </div>
-              <Button
-                variant="brand"
-                disabled={welcomeGift.length !== 2}
-                onClick={() =>
-                  requireUser(() => {
-                    setClaimedWelcomeGift(welcomeGift);
-                    onToast("Presente salvo nesta sessão de demonstração");
-                  })
-                }
-              >
-                Resgatar meu presente
-              </Button>
-            </>
-          )}
-        </div>
-      </section>
-
-      <section className="market community-extras" id="presente-evento">
-        <div className="container event-panel">
-          <div className="section-eyebrow">
-            <Gift size={14} /> Ação no campus
-          </div>
-          <h2>Presente do evento</h2>
-          {eventGift ? (
-            <p>Você escolheu: {eventGift}.</p>
-          ) : (
-            <>
-              <p>Escolha 1 opção de demonstração. Uma escolha local por perfil.</p>
-              <div className="combo-options">
-                {eventGifts.map((item) => (
+      {(page === "all" || page === "combos" || page === "store") && (
+        <section className="market community-extras" id="combos">
+          <div className="container">
+            <div className="section-eyebrow">Monte do seu jeito</div>
+            <h2>Combos de jogos</h2>
+            <p>Escolha o tamanho do combo e os itens. Valores de exemplo, sem cobrança.</p>
+            <div className="feature-chip-row">
+              {tiers.map((item) => (
+                <Button
+                  key={item.count}
+                  variant="outline"
+                  className={tier === item.count ? "selected" : ""}
+                  onClick={() => {
+                    setTier(item.count);
+                    setCombo((current) => current.slice(0, item.count));
+                  }}
+                >
+                  {item.count} itens · {brl(item.price)}
+                </Button>
+              ))}
+            </div>
+            <div className="combo-options">
+              {gameItems.map((item) => {
+                const checked = combo.includes(item);
+                return (
                   <button
-                    className="combo-option"
-                    key={item}
+                    className={`combo-option${checked ? " selected" : ""}`}
                     type="button"
+                    key={item}
+                    disabled={!checked && combo.length >= tier}
+                    aria-pressed={checked}
                     onClick={() =>
-                      requireUser(() => {
-                        setEventGift(item);
-                        onToast("Presente escolhido nesta sessão");
-                      })
+                      setCombo((current) =>
+                        checked ? current.filter((entry) => entry !== item) : [...current, item],
+                      )
                     }
                   >
                     {item}
                   </button>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-
-      <section className="affiliate community-affiliate" id="partners">
-        <div className="container">
-          <div className="affiliate-layout">
-            <div>
-              <div className="section-eyebrow">
-                <Users size={14} /> Programa de parceiros
-              </div>
-              <h2>
-                Indique. Conecte.
-                <br />
-                <em>Ganhe com a comunidade.</em>
-              </h2>
-              <p>
-                Progresso e recompensas são apenas uma simulação local, sem vendas nem comissão
-                reais.
-              </p>
-              {!user ? (
-                <Button variant="brand" onClick={onLogin}>
-                  Entrar na demonstração
-                </Button>
-              ) : (
-                <div className="partner-progress">
-                  <strong>Seu código: {referralCode}</strong>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      if (navigator.clipboard)
-                        void navigator.clipboard.writeText(referralCode).then(
-                          () => onToast("Código copiado"),
-                          () => onToast(`Seu código: ${referralCode}`),
-                        );
-                      else onToast(`Seu código: ${referralCode}`);
-                    }}
-                  >
-                    Copiar código
-                  </Button>
-                  <Button variant="outline" onClick={() => setReferrals((value) => value + 1)}>
-                    Simular indicação
-                  </Button>
-                  <p>
-                    Indicações: {referrals}/{referralTarget} · vendas: {sales}/{salesTarget} ·
-                    comissão demonstrativa: {commission}%
-                  </p>
-                  <Button variant="outline" onClick={() => setSales((value) => value + 1)}>
-                    Simular venda confirmada
-                  </Button>
-                  {referrals >= referralTarget && !reward && (
-                    <div className="combo-options">
-                      <p>Escolha sua recompensa de demonstração:</p>
-                      {rewardItems.map((item) => (
-                        <button
-                          key={item}
-                          type="button"
-                          className="combo-option"
-                          onClick={() => {
-                            setReward(item);
-                            onToast("Recompensa escolhida nesta sessão");
-                          }}
-                        >
-                          {item}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {reward && <p>Recompensa selecionada: {reward}.</p>}
-                </div>
-              )}
+                );
+              })}
             </div>
-            <div className="affiliate-stat">
-              2×<small>VENDAS PARA LIBERAR A COMISSÃO</small>
+            <div className="combo-summary">
+              <h3>
+                Combo de {tier} itens · {brl(currentTier.price)} por mês
+              </h3>
+              <p>
+                Preço oficial somado: <del>{brl(currentTier.official)}</del> · economia de{" "}
+                {Math.round((1 - currentTier.price / currentTier.official) * 100)}%
+              </p>
+              <p>
+                {combo.length < tier
+                  ? `Escolha mais ${tier - combo.length} item(ns).`
+                  : combo.join(" · ")}
+              </p>
+              <Button variant="brand" disabled={combo.length !== tier} onClick={orderCombo}>
+                Pedir pelo WhatsApp
+              </Button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {quickGiftOpen && (
+      {(page === "all" || page === "gifts") && (
+        <section className="market community-extras" id="gift">
+          <div className="container">
+            <div className="section-eyebrow">
+              <Gift size={14} /> Presente de boas-vindas
+            </div>
+            <h2>Escolha 2 assinaturas de demonstração</h2>
+            <p>Uma escolha por perfil local. Nenhuma assinatura será entregue automaticamente.</p>
+            {claimedWelcomeGift ? (
+              <p className="prototype-note">
+                Seleção de demonstração: {claimedWelcomeGift.join(" e ")}.
+              </p>
+            ) : (
+              <>
+                <div className="combo-options">
+                  {gameItems.map((item) => {
+                    const checked = welcomeGift.includes(item);
+                    return (
+                      <button
+                        className={`combo-option${checked ? " selected" : ""}`}
+                        key={item}
+                        type="button"
+                        aria-pressed={checked}
+                        disabled={!checked && welcomeGift.length >= 2}
+                        onClick={() =>
+                          setWelcomeGift((current) =>
+                            checked
+                              ? current.filter((entry) => entry !== item)
+                              : [...current, item],
+                          )
+                        }
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+                </div>
+                <Button
+                  variant="brand"
+                  disabled={welcomeGift.length !== 2}
+                  onClick={() =>
+                    requireUser(() => {
+                      setClaimedWelcomeGift(welcomeGift);
+                      onToast("Presente salvo nesta sessão de demonstração");
+                    })
+                  }
+                >
+                  Resgatar meu presente
+                </Button>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {(page === "all" || page === "gifts") && (
+        <section className="market community-extras" id="presente-evento">
+          <div className="container event-panel">
+            <div className="section-eyebrow">
+              <Gift size={14} /> Ação no campus
+            </div>
+            <h2>Presente do evento</h2>
+            {eventGift ? (
+              <p>Você escolheu: {eventGift}.</p>
+            ) : (
+              <>
+                <p>Escolha 1 opção de demonstração. Uma escolha local por perfil.</p>
+                <div className="combo-options">
+                  {eventGifts.map((item) => (
+                    <button
+                      className="combo-option"
+                      key={item}
+                      type="button"
+                      onClick={() =>
+                        requireUser(() => {
+                          setEventGift(item);
+                          onToast("Presente escolhido nesta sessão");
+                        })
+                      }
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      {(page === "all" || page === "partners") && (
+        <section className="affiliate community-affiliate" id="partners">
+          <div className="container">
+            <div className="affiliate-layout">
+              <div>
+                <div className="section-eyebrow">
+                  <Users size={14} /> Programa de parceiros
+                </div>
+                <h2>
+                  Indique. Conecte.
+                  <br />
+                  <em>Ganhe com a comunidade.</em>
+                </h2>
+                <p>
+                  Progresso e recompensas são apenas uma simulação local, sem vendas nem comissão
+                  reais.
+                </p>
+                {!user ? (
+                  <Button variant="brand" onClick={onLogin}>
+                    Entrar na demonstração
+                  </Button>
+                ) : (
+                  <div className="partner-progress">
+                    <strong>Seu código: {referralCode}</strong>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        if (navigator.clipboard)
+                          void navigator.clipboard.writeText(referralCode).then(
+                            () => onToast("Código copiado"),
+                            () => onToast(`Seu código: ${referralCode}`),
+                          );
+                        else onToast(`Seu código: ${referralCode}`);
+                      }}
+                    >
+                      Copiar código
+                    </Button>
+                    <Button variant="outline" onClick={() => setReferrals((value) => value + 1)}>
+                      Simular indicação
+                    </Button>
+                    <p>
+                      Indicações: {referrals}/{referralTarget} · vendas: {sales}/{salesTarget} ·
+                      comissão demonstrativa: {commission}%
+                    </p>
+                    <Button variant="outline" onClick={() => setSales((value) => value + 1)}>
+                      Simular venda confirmada
+                    </Button>
+                    {referrals >= referralTarget && !reward && (
+                      <div className="combo-options">
+                        <p>Escolha sua recompensa de demonstração:</p>
+                        {rewardItems.map((item) => (
+                          <button
+                            key={item}
+                            type="button"
+                            className="combo-option"
+                            onClick={() => {
+                              setReward(item);
+                              onToast("Recompensa escolhida nesta sessão");
+                            }}
+                          >
+                            {item}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {reward && <p>Recompensa selecionada: {reward}.</p>}
+                  </div>
+                )}
+              </div>
+              <div className="affiliate-stat">
+                2×<small>VENDAS PARA LIBERAR A COMISSÃO</small>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {(page === "all" || page === "store") && quickGiftOpen && (
         <Dialog open onOpenChange={(open) => !open && setQuickGiftOpen(false)}>
           <DialogContent>
             <DialogHeader>
@@ -752,7 +770,7 @@ export function CommunityFeatures({
         </Dialog>
       )}
 
-      {ownerOpen && (
+      {(page === "all" || page === "store") && ownerOpen && (
         <Dialog open onOpenChange={(open) => !open && setOwnerOpen(false)}>
           <DialogContent className="transaction-dialog">
             <DialogHeader>

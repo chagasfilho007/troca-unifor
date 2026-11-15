@@ -14,6 +14,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import deskImage from "@/assets/community-desk.jpg";
@@ -91,9 +92,9 @@ export function HeroSection({
             <span className="wordmark-dot">.</span>
           </h1>
           {floatingCategories.map((category) => (
-            <a
+            <Link
+              to="/mural"
               key={category.cls}
-              href={category.cat === "SERVIÇOS" ? "#vender" : "#anuncios"}
               onClick={() => {
                 const selectedCategory = categoryByLabel[category.cat];
                 if (selectedCategory) onChooseCategory(selectedCategory);
@@ -112,7 +113,7 @@ export function HeroSection({
                 <span>{category.foot}</span>
                 <span>{category.count}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="hero-bottom reveal">
@@ -120,9 +121,9 @@ export function HeroSection({
           <p>Troque assinaturas, compartilhe talentos e descubra possibilidades na Unifor.</p>
           <div className="hero-ctas">
             <Button variant="brand" asChild>
-              <a href="#anuncios" onClick={() => onChooseCategory("Todos")}>
+              <Link to="/mural" onClick={() => onChooseCategory("Todos")}>
                 Explorar trocas <ArrowUpRight />
-              </a>
+              </Link>
             </Button>
             <Button variant="outline" onClick={onCreate}>
               Anunciar o que tenho <Plus />
@@ -158,15 +159,20 @@ export function Ticker() {
   );
 }
 
-export function CategoryGrid({ onChooseCategory }: CategoryAction) {
+export function CategoryGrid({
+  onChooseCategory,
+  primaryOnly = false,
+}: CategoryAction & { primaryOnly?: boolean }) {
+  const visibleCategories = primaryOnly ? categories.slice(0, 4) : categories;
+
   return (
     <section className="categories">
       <div className="container">
         <div className="section-eyebrow">Encontre sua próxima troca</div>
         <div className="category-grid">
-          {categories.map((category) => (
-            <a
-              href="#anuncios"
+          {visibleCategories.map((category) => (
+            <Link
+              to="/mural"
               onClick={() => onChooseCategory(category.name)}
               className="category"
               key={category.id}
@@ -182,9 +188,16 @@ export function CategoryGrid({ onChooseCategory }: CategoryAction) {
                 </small>
               </div>
               <ArrowUpRight size={19} />
-            </a>
+            </Link>
           ))}
         </div>
+        {primaryOnly && (
+          <div className="mt-6">
+            <Button variant="outline" asChild>
+              <Link to="/mural">Ver todas as categorias</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -236,6 +249,22 @@ export function HowItWorksSection() {
               vai além da sala de aula.
             </span>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FinalCTASection({ onCreate }: { onCreate: () => void }) {
+  return (
+    <section className="affiliate">
+      <div className="container affiliate-layout">
+        <div>
+          <div className="section-eyebrow">Pronto para fazer uma troca?</div>
+          <h2>Tem algo parado? Anuncie em um minuto.</h2>
+          <Button variant="brand" onClick={onCreate}>
+            Anunciar agora <ArrowUpRight />
+          </Button>
         </div>
       </div>
     </section>

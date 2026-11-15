@@ -10,11 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InicioRouteImport } from './routes/inicio'
+import { Route as LojaRouteImport } from './routes/loja'
+import { Route as MuralRouteImport } from './routes/mural'
+import { Route as ParceirosRouteImport } from './routes/parceiros'
 import { Route as PresenteRouteImport } from './routes/presente'
+import { Route as PresentesRouteImport } from './routes/presentes'
+import { Route as SegurancaRouteImport } from './routes/seguranca'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InicioRoute = InicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LojaRoute = LojaRouteImport.update({
+  id: '/loja',
+  path: '/loja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MuralRoute = MuralRouteImport.update({
+  id: '/mural',
+  path: '/mural',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParceirosRoute = ParceirosRouteImport.update({
+  id: '/parceiros',
+  path: '/parceiros',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PresenteRoute = PresenteRouteImport.update({
@@ -22,31 +48,90 @@ const PresenteRoute = PresenteRouteImport.update({
   path: '/presente',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PresentesRoute = PresentesRouteImport.update({
+  id: '/presentes',
+  path: '/presentes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SegurancaRoute = SegurancaRouteImport.update({
+  id: '/seguranca',
+  path: '/seguranca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/inicio': typeof InicioRoute
+  '/loja': typeof LojaRoute
+  '/mural': typeof MuralRoute
+  '/parceiros': typeof ParceirosRoute
   '/presente': typeof PresenteRoute
+  '/presentes': typeof PresentesRoute
+  '/seguranca': typeof SegurancaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/inicio': typeof InicioRoute
+  '/loja': typeof LojaRoute
+  '/mural': typeof MuralRoute
+  '/parceiros': typeof ParceirosRoute
   '/presente': typeof PresenteRoute
+  '/presentes': typeof PresentesRoute
+  '/seguranca': typeof SegurancaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/inicio': typeof InicioRoute
+  '/loja': typeof LojaRoute
+  '/mural': typeof MuralRoute
+  '/parceiros': typeof ParceirosRoute
   '/presente': typeof PresenteRoute
+  '/presentes': typeof PresentesRoute
+  '/seguranca': typeof SegurancaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/presente'
+  fullPaths:
+    | '/'
+    | '/inicio'
+    | '/loja'
+    | '/mural'
+    | '/parceiros'
+    | '/presente'
+    | '/presentes'
+    | '/seguranca'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/presente'
-  id: '__root__' | '/' | '/presente'
+  to:
+    | '/'
+    | '/inicio'
+    | '/loja'
+    | '/mural'
+    | '/parceiros'
+    | '/presente'
+    | '/presentes'
+    | '/seguranca'
+  id:
+    | '__root__'
+    | '/'
+    | '/inicio'
+    | '/loja'
+    | '/mural'
+    | '/parceiros'
+    | '/presente'
+    | '/presentes'
+    | '/seguranca'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  InicioRoute: typeof InicioRoute
+  LojaRoute: typeof LojaRoute
+  MuralRoute: typeof MuralRoute
+  ParceirosRoute: typeof ParceirosRoute
   PresenteRoute: typeof PresenteRoute
+  PresentesRoute: typeof PresentesRoute
+  SegurancaRoute: typeof SegurancaRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +143,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inicio': {
+      id: '/inicio'
+      path: '/inicio'
+      fullPath: '/inicio'
+      preLoaderRoute: typeof InicioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loja': {
+      id: '/loja'
+      path: '/loja'
+      fullPath: '/loja'
+      preLoaderRoute: typeof LojaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mural': {
+      id: '/mural'
+      path: '/mural'
+      fullPath: '/mural'
+      preLoaderRoute: typeof MuralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parceiros': {
+      id: '/parceiros'
+      path: '/parceiros'
+      fullPath: '/parceiros'
+      preLoaderRoute: typeof ParceirosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/presente': {
       id: '/presente'
       path: '/presente'
@@ -65,12 +178,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PresenteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/presentes': {
+      id: '/presentes'
+      path: '/presentes'
+      fullPath: '/presentes'
+      preLoaderRoute: typeof PresentesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seguranca': {
+      id: '/seguranca'
+      path: '/seguranca'
+      fullPath: '/seguranca'
+      preLoaderRoute: typeof SegurancaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  InicioRoute: InicioRoute,
+  LojaRoute: LojaRoute,
+  MuralRoute: MuralRoute,
+  ParceirosRoute: ParceirosRoute,
   PresenteRoute: PresenteRoute,
+  PresentesRoute: PresentesRoute,
+  SegurancaRoute: SegurancaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
